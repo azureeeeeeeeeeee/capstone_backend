@@ -1,9 +1,8 @@
-openapi: 3.0.0
+openapi: 3.0.4
 info:
-  title: Q&A CRUD API
-  version: 1.0.0
-servers:
-  - url: https://api.example.com/v1
+  title: Tracer Study - API Specification
+  description: |-
+    Ini adalah API specification untuk aplikasi tracer study capstone kelompok 8 Informatika ITK
 
 paths:
   /roles:
