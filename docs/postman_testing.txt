@@ -1,0 +1,17 @@
+register - post
+http://127.0.0.1:8000/accounts/register/
+
+{
+  "username": "johndongo",
+  "email": "10@itk.ac.id",
+  "password": "test1234",
+  "role": "supervisor"
+}
+roles: user/supervisor/admin
+login - post
+http://127.0.0.1:8000/accounts/login/
+
+{
+  "username": "johndongo",
+  "password": "test1234"
+}
