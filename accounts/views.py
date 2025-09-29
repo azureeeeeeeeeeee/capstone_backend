@@ -11,6 +11,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -23,24 +25,44 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 #     permission_classes = [AllowAny]
 
 
-class LoginView(generics.GenericAPIView):
-    permission_classes = [AllowAny]
+# class LoginView(generics.GenericAPIView):
+#     permission_classes = [AllowAny]
 
-    def post(self, request):
-        username = request.data.get("username")
-        password = request.data.get("password")
-        user = authenticate(username=username, password=password)
-        if user:
-            refresh = RefreshToken.for_user(user)
-            return Response(
-                {
-                    "refresh": str(refresh),
-                    "access": str(refresh.access_token),
-                }
-            )
-        return Response({"error": "Invalid Credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+#     def post(self, request):
+#         username = request.data.get("username")
+#         password = request.data.get("password")
+#         user = authenticate(username=username, password=password)
+#         if user:
+#             refresh = RefreshToken.for_user(user)
+#             return Response(
+#                 {
+#                     "refresh": str(refresh),
+#                     "access": str(refresh.access_token),
+#                 }
+#             )
+#         return Response({"error": "Invalid Credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
+
+
+@swagger_auto_schema(
+    method="post",
+    tags=['Auth'],
+    operation_description="Register a new user",
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            "id": openapi.Schema(type=openapi.TYPE_STRING, description="User ID / Nomor Induk"),
+            "username": openapi.Schema(type=openapi.TYPE_STRING, description="Full name"),
+            "password": openapi.Schema(type=openapi.TYPE_STRING, description="Password"),
+        },
+        required=["id", "username", "password"],
+    ),
+    responses={
+        200: openapi.Response("Register success", examples={"application/json": {"message": "register berhasil"}}),
+        400: openapi.Response("Validation error"),
+    },
+)
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register(request):

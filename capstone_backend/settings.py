@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',  # optional, for logout
     'accounts',  # <-- we’ll make this app
+    "drf_yasg"
 ]
 
 MIDDLEWARE = [
@@ -147,3 +148,5 @@ SIMPLE_JWT = {
 
 
 AUTH_USER_MODEL = 'accounts.User'
+
+STATIC_URL = "/static/"
