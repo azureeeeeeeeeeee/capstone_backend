@@ -48,6 +48,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 @swagger_auto_schema(
     method="post",
     tags=['Auth'],
+    
     operation_description="Register a new user",
     request_body=openapi.Schema(
         type=openapi.TYPE_OBJECT,

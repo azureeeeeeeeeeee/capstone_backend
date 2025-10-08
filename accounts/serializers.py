@@ -6,7 +6,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-        token["role"] = user.role   # add role claim
+        token["role"] = str(user.role)
         return token
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -27,6 +27,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    role = serializers.StringRelatedField()
     class Meta:
         model = User
         fields = '__all__'
