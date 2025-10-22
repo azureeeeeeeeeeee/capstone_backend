@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Survey, ProgramStudy
+from .models import Survey, ProgramStudy, Section
 
 
 class ProgramStudySerializer(serializers.ModelSerializer):
@@ -27,3 +27,19 @@ class SurveySerializer(serializers.ModelSerializer):
             'created_at'
         ]
         read_only_fields = ['created_at', 'created_by']
+
+class SectionSerializer(serializers.ModelSerializer):
+    survey_title = serializers.CharField(source='survey.title', read_only=True)
+
+    class Meta:
+        model = Section
+        fields = [
+            'id',
+            'survey',
+            'survey_title',
+            'title',
+            'description',
+            'order',
+            'created_at',
+        ]
+        read_only_fields = ['created_at']
