@@ -6,39 +6,53 @@ from accounts.models import Role
 
 
 class Command(BaseCommand):
-    help = "Seed initial data for faculties, programs, and surveys"
+    help = "Seed initial data for faculties, programs, and roles"
 
     def handle(self, *args, **options):
-        self.stdout.write(self.style.WARNING("Seeding data..."))
+        self.stdout.write(self.style.WARNING("🌱 Seeding data..."))
 
+        # === 1. FACULTIES ===
         faculty_data = ["FSTI", "FPB", "FRTI"]
-        faculties = [Faculty.objects.get_or_create(name=name)[0] for name in faculty_data]
+        faculties = {}
+        for name in faculty_data:
+            faculty, _ = Faculty.objects.get_or_create(name=name)
+            faculties[name] = faculty
 
-        fsti = ['Matematika', 'Ilmu Aktuaria', 'Statistika', 'Fisika', 'Informatika', 'Sistem Informasi', 'Bisnis Digital', 'Teknik Elektro']
-        fpb = ['Teknik Perkapalan', 'Teknik Kelautan', 'Teknik Lingkungan', 'Teknik Sipil', 'PWK', 'Arsitektur', 'DKV']
-        frti = ['Teknik Mesin', 'Teknik Industri', 'Teknik Logistik', 'TMM', 'Teknologi Pangan', 'Teknik Kimia', 'Rekayasa Keselematan']
+        # === 2. PROGRAM STUDIES ===
+        fsti = ['Matematika', 'Ilmu Aktuaria', 'Statistika', 'Fisika',
+                'Informatika', 'Sistem Informasi', 'Bisnis Digital', 'Teknik Elektro']
+        fpb = ['Teknik Perkapalan', 'Teknik Kelautan', 'Teknik Lingkungan',
+               'Teknik Sipil', 'PWK', 'Arsitektur', 'DKV']
+        frti = ['Teknik Mesin', 'Teknik Industri', 'Teknik Logistik', 'TMM',
+                'Teknologi Pangan', 'Teknik Kimia', 'Rekayasa Keselematan']
 
-        # 2. Programs
-        program_data = [
-            (faculties[0], fsti),
-            (faculties[1], fpb),
-            (faculties[2], frti),
-        ]
+        program_data = {
+            "FSTI": fsti,
+            "FPB": fpb,
+            "FRTI": frti,
+        }
 
         total_programs = 0
-        for faculty, programs in program_data:
+        program_mapping = {} 
+
+        for faculty_key, programs in program_data.items():
+            faculty = faculties[faculty_key]
             for name in programs:
-                ProgramStudy.objects.get_or_create(faculty=faculty, name=name)
+                program, _ = ProgramStudy.objects.get_or_create(faculty=faculty, name=name)
+                program_mapping[name] = program
                 total_programs += 1
 
-        roles = ['Admin', 'Tracer', 'Alumni', 'Pimpinan Unit']
+        self.stdout.write(self.style.SUCCESS(f"✅ Created/Verified {total_programs} Program Studies."))
 
-        for i in fsti+fpb+frti:
-            roles.append(f"Prodi {i}")
+        global_roles = ['Admin', 'Tracer', 'Alumni', 'Pimpinan Unit']
+        for role_name in global_roles:
+            Role.objects.get_or_create(name=role_name, program_study=None)
 
-        for role in roles:
-            Role.objects.get_or_create(name=role)
+        self.stdout.write(self.style.SUCCESS(f"✅ Created/Verified {len(global_roles)} global roles."))
 
-        self.stdout.write(self.style.SUCCESS(
-            f"✅ Seeding completed successfully! "
-        ))
+        for program_name, program in program_mapping.items():
+            Role.objects.get_or_create(name=f"Prodi {program_name}", program_study=program)
+
+        self.stdout.write(self.style.SUCCESS(f"✅ Created/Verified {len(program_mapping)} program-specific roles."))
+
+        self.stdout.write(self.style.SUCCESS("🎉 Seeding completed successfully!"))

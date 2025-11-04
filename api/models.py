@@ -66,3 +66,28 @@ class Question(models.Model):
 
     def __str__(self):
         return f"{self.text[:60]}..."
+    
+class ProgramSpecificQuestion(models.Model):
+    QUESTION_TYPE_CHOICES = [
+        ('text', 'Text'),
+        ('number', 'Number'),
+        ('radio', 'Single Choice'),
+        ('checkbox', 'Multiple Choice'),
+        ('scale', 'Scale 1–5'),
+        ('dropdown', 'Dropdown'),
+    ]
+
+    program_study = models.ForeignKey(ProgramStudy, on_delete=models.CASCADE, related_name='questions')
+    survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name='program_questions', null=True, blank=True)
+    text = models.TextField()
+    question_type = models.CharField(max_length=20, choices=QUESTION_TYPE_CHOICES, default='text')
+    options = models.TextField(blank=True, null=True) 
+    code = models.CharField(max_length=50, blank=True, null=True) 
+    source = models.CharField(max_length=100, blank=True, null=True)  
+    description = models.TextField(blank=True, null=True) 
+    order = models.IntegerField(default=0)
+    is_required = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.text[:60]}..."

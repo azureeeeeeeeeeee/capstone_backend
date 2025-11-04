@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Survey, ProgramStudy, Section, Question
+from .models import Survey, ProgramStudy, Section, Question, ProgramSpecificQuestion
+import json
 
 
 class ProgramStudySerializer(serializers.ModelSerializer):
@@ -44,9 +45,6 @@ class SectionSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['created_at']
 
-import json
-from rest_framework import serializers
-from .models import Question
 
 class QuestionSerializer(serializers.ModelSerializer):
     section_title = serializers.CharField(source='section.title', read_only=True)
@@ -86,3 +84,16 @@ class QuestionSerializer(serializers.ModelSerializer):
             rep['options'] = instance.options.splitlines() if instance.options else []
         return rep
 
+class ProgramSpecificQuestionSerializer(serializers.ModelSerializer):
+    program_study_name = serializers.CharField(source='program_study.name', read_only=True)
+    survey_title = serializers.CharField(source='survey.title', read_only=True)
+
+    class Meta:
+        model = ProgramSpecificQuestion
+        fields = [
+            'id', 'program_study', 'program_study_name',
+            'survey', 'survey_title',
+            'text', 'question_type', 'options',
+            'code', 'source', 'description',
+            'order', 'is_required', 'created_at'
+        ]

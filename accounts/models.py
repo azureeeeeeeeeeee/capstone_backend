@@ -3,9 +3,16 @@ from django.db import models
 
 class Role(models.Model):
     name = models.CharField(max_length=30)
+    program_study = models.ForeignKey(
+        'api.ProgramStudy',
+        on_delete=models.CASCADE,
+        null=True, blank=True,
+        related_name='roles'
+    )
 
     def __str__(self):
         return self.name
+
     
 
 
@@ -58,6 +65,12 @@ class User(AbstractUser):
     id = models.CharField(primary_key=True, max_length=50)
     username = models.CharField("fullname", max_length=255)
     role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True, blank=True)
+    program_study = models.ForeignKey(
+        'api.ProgramStudy',
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        related_name='users'
+    )
     address = models.TextField(null=True, blank=True)
     phone_number = models.CharField(max_length=20, null=True, blank=True)
     last_survey = models.CharField(max_length=10, choices=SURVEY_CHOICES, default='none')

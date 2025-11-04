@@ -13,4 +13,25 @@ urlpatterns = [
     # ---- Question ----
     path("<int:survey_id>/sections/<int:section_id>/questions/", views.question_list_create, name="question-list-create"),
     path("<int:survey_id>/sections/<int:section_id>/questions/<int:pk>/", views.question_detail, name="question-detail"),
+
+    path(
+        '<int:survey_id>/programs/<int:program_study_id>/questions/',
+        views.program_specific_question_list_create,
+        name='program_specific_question_list_create'
+    ),
+    path(
+        '<int:survey_id>/programs/<int:program_study_id>/questions/<int:pk>/',
+        views.program_specific_question_detail,
+        name='program_specific_question_detail'
+    ),
+    path(
+        '<int:survey_id>/programs/<int:program_study_id>/questions/',
+        views.program_specific_question_list_create,
+        name='program-specific-question-list-create'
+    ),
+    path(
+        '<int:survey_id>/programs/<int:program_study_id>/questions/<int:pk>/',
+        views.program_specific_question_detail,
+        name='program-specific-question-detail'
+    ),
 ]
