@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Survey, ProgramStudy, Section, Question, ProgramSpecificQuestion
+from .models import Survey, ProgramStudy, Section, Question, ProgramSpecificQuestion, Faculty
 import json
 
 
@@ -97,3 +97,17 @@ class ProgramSpecificQuestionSerializer(serializers.ModelSerializer):
             'code', 'source', 'description',
             'order', 'is_required', 'created_at'
         ]
+
+
+class FacultySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Faculty
+        fields = ['id', 'name']
+
+
+class ProgramStudySerializer(serializers.ModelSerializer):
+    faculty_name = serializers.CharField(source='faculty.name', read_only=True)
+
+    class Meta:
+        model = ProgramStudy
+        fields = ['id', 'name', 'faculty', 'faculty_name']

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # existing ones…
+    "corsheaders",
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',  # optional, for logout
     'accounts',  # <-- we’ll make this app
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -151,3 +153,8 @@ SIMPLE_JWT = {
 AUTH_USER_MODEL = 'accounts.User'
 
 STATIC_URL = "/static/"
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
