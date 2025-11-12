@@ -41,3 +41,11 @@ class UnitPermissions(BasePermission):
 class PeriodePermissions(BasePermission):
     def has_permission(self, request, view):
         return request.user.is_authenticated and request.user.role.name in ['Admin', 'Tracer']
+    
+class RolePermissions(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.role.name in ['Admin']
+    
+class UserPermissions(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.role.name in ['Admin']

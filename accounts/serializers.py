@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import User
+from .models import User, Role
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -40,3 +40,25 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+    
+
+
+class RoleSerializer(serializers.ModelSerializer):
+    program_study_name = serializers.CharField(source='program_study.name', read_only=True)
+
+    class Meta:
+        model = Role
+        fields = ['id', 'name', 'program_study', 'program_study_name']
+
+
+class UserSerializer(serializers.ModelSerializer):
+    role_name = serializers.CharField(source='role.name', read_only=True)
+    program_study_name = serializers.CharField(source='program_study.name', read_only=True)
+
+    class Meta:
+        model = User
+        fields = [
+            'id', 'username', 'email', 'role', 'role_name',
+            'program_study', 'program_study_name',
+            'address', 'phone_number'
+        ]
