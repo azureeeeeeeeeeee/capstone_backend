@@ -4,6 +4,7 @@ from rest_framework import status
 from api.models import Faculty, ProgramStudy
 from api.serializers import FacultySerializer, ProgramStudySerializer
 from api.permissions import permissions
+from accounts.models import Role
 
 @api_view(['GET', 'POST'])
 @permission_classes([permissions.UnitPermissions])
@@ -61,6 +62,8 @@ def program_study_list(request):
         serializer = ProgramStudySerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            new_study_program_name = serializer.validated_data.get('name')
+            Role.objects.get_or_create(name=f"Prodi {new_study_program_name}")
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
