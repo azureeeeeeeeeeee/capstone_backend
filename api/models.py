@@ -33,6 +33,9 @@ class Survey(models.Model):
     end_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"{self.title} @ {self.created_at}"
+
 class Section(models.Model):
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name='sections')
     title = models.CharField(max_length=255)

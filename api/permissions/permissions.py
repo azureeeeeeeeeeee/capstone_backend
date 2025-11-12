@@ -30,3 +30,10 @@ class ProgramSpecificQuestionPermissions(BasePermission):
             return role_name == expected_role
 
         return False
+    
+
+class UnitPermissions(BasePermission):
+    def has_permission(self, request, view):
+        if request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
+            return request.user.is_authenticated and request.user.role.name in ['Admin']
+        return True
