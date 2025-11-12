@@ -37,3 +37,7 @@ class UnitPermissions(BasePermission):
         if request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
             return request.user.is_authenticated and request.user.role.name in ['Admin']
         return True
+    
+class PeriodePermissions(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.role.name in ['Admin', 'Tracer']

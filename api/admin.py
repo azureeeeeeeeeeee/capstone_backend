@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.models import ProgramStudy, Faculty, Survey, ProgramSpecificQuestion
+from api.models import ProgramStudy, Faculty, Survey, ProgramSpecificQuestion, Periode
 
 # Register your models here.
 admin.site.register(ProgramStudy)

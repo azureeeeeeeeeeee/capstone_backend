@@ -1,7 +1,11 @@
 from rest_framework import serializers
-from .models import Survey, ProgramStudy, Section, Question, ProgramSpecificQuestion, Faculty
+from .models import Survey, ProgramStudy, Section, Question, ProgramSpecificQuestion, Faculty, Periode
 import json
 
+class PeriodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Periode
+        fields = ['id', 'category', 'order']
 
 class ProgramStudySerializer(serializers.ModelSerializer):
     faculty_name = serializers.CharField(source='faculty.name', read_only=True)
@@ -13,6 +17,10 @@ class ProgramStudySerializer(serializers.ModelSerializer):
 
 class SurveySerializer(serializers.ModelSerializer):
     created_by = serializers.StringRelatedField(read_only=True)
+    periode = PeriodeSerializer(read_only=True)
+    periode_id = serializers.PrimaryKeyRelatedField(
+        queryset=Periode.objects.all(), source='periode', write_only=True
+    )
 
     class Meta:
         model = Survey
@@ -23,6 +31,8 @@ class SurveySerializer(serializers.ModelSerializer):
             'is_active',
             'survey_type',
             'created_by',
+            'periode',
+            'periode_id',
             'start_at',
             'end_at',
             'created_at'

@@ -15,6 +15,15 @@ class ProgramStudy(models.Model):
     def __str__(self):
         return self.name
 
+class Periode(models.Model):
+    category = models.CharField(max_length=50, unique=True)
+    order = models.PositiveIntegerField(unique=True)
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return f"{self.category} @ {self.order}"
 
 class Survey(models.Model):
     SURVEY_CHOICES = (
@@ -28,6 +37,7 @@ class Survey(models.Model):
     description = models.TextField(blank=True)
     is_active = models.BooleanField(default=False)
     survey_type = models.CharField(max_length=10, choices=SURVEY_CHOICES, default='exit')
+    periode = models.ForeignKey(Periode, on_delete=models.CASCADE, related_name='surveys', null=True, blank=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     start_at = models.DateTimeField(null=True, blank=True)
     end_at = models.DateTimeField(null=True, blank=True)
