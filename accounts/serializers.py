@@ -37,7 +37,8 @@ class UserSerializer(serializers.ModelSerializer):
             id=validated_data['id'],
             username=validated_data['username'],
         )
-        user.set_password(validated_data['password'])
+        print(f"Password : {validated_data['id']}-{validated_data['phone_number']}")
+        user.set_password(f"{validated_data['id']}-{validated_data['phone_number']}")
         user.save()
         return user
     
@@ -51,14 +52,26 @@ class RoleSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'program_study', 'program_study_name']
 
 
-class UserSerializer(serializers.ModelSerializer):
-    role_name = serializers.CharField(source='role.name', read_only=True)
-    program_study_name = serializers.CharField(source='program_study.name', read_only=True)
+class UserCreationSerializer(serializers.ModelSerializer):
+    # role_name = serializers.CharField(source='role.name', read_only=True)
+    role = serializers.PrimaryKeyRelatedField(queryset=Role.objects.all())
+    # program_study_name = serializers.CharField(source='program_study.name', read_only=True)
 
     class Meta:
         model = User
         fields = [
-            'id', 'username', 'email', 'role', 'role_name',
-            'program_study', 'program_study_name',
+            'id', 'username', 'email',
+            'role', 'program_study',
             'address', 'phone_number'
         ]
+        # fields = '__all__'
+
+    def create(self, validated_data):
+        user = User(
+            **validated_data
+        )
+        # user.role = validated_data['role']
+
+        user.set_password(f"{validated_data['id']}-{validated_data['phone_number']}")
+        user.save()
+        return user

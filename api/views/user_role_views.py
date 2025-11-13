@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from accounts.models import User, Role
-from accounts.serializers import UserSerializer, RoleSerializer
+from accounts.serializers import UserCreationSerializer, RoleSerializer
 from api.permissions import permissions
 
 @api_view(['GET', 'POST'])
@@ -50,11 +50,11 @@ def role_detail(request, pk):
 def user_list_create(request):
     if request.method == 'GET':
         users = User.objects.select_related('role', 'program_study').all()
-        serializer = UserSerializer(users, many=True)
+        serializer = UserCreationSerializer(users, many=True)
         return Response(serializer.data)
 
     if request.method == 'POST':
-        serializer = UserSerializer(data=request.data)
+        serializer = UserCreationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -70,11 +70,11 @@ def user_detail(request, pk):
         return Response({'detail': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = UserSerializer(user)
+        serializer = UserCreationSerializer(user)
         return Response(serializer.data)
 
     if request.method == 'PUT':
-        serializer = UserSerializer(user, data=request.data, partial=True)
+        serializer = UserCreationSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
