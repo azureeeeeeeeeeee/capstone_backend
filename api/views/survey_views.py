@@ -4,8 +4,28 @@ from rest_framework import status
 from api.models import Survey, Section, Question, ProgramSpecificQuestion
 from api.serializers import SurveySerializer, SectionSerializer, QuestionSerializer, ProgramSpecificQuestionSerializer
 from api.permissions import permissions
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 
+@swagger_auto_schema(
+    method='get',
+    tags=['Survey'],
+    operation_description="Retrieve all surveys ordered by creation date (newest first).",
+    responses={
+        200: openapi.Response("List of surveys", SurveySerializer(many=True)),
+    },
+)
+@swagger_auto_schema(
+    method='post',
+    tags=['Survey'],
+    operation_description="Create a new survey.",
+    request_body=SurveySerializer,
+    responses={
+        201: openapi.Response("Survey created successfully", SurveySerializer),
+        400: "Validation error",
+    },
+)
 @api_view(['GET', 'POST'])
 @permission_classes([permissions.SurveyPermissions])
 def survey_list_create(request):
@@ -22,6 +42,48 @@ def survey_list_create(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+
+@swagger_auto_schema(
+    method='get',
+    tags=['Survey'],
+    operation_description="Retrieve a specific survey by ID.",
+    responses={
+        200: openapi.Response("Survey details", SurveySerializer),
+        404: "Survey not found",
+    },
+)
+@swagger_auto_schema(
+    method='put',
+    tags=['Survey'],
+    operation_description="Update an existing survey (full update).",
+    request_body=SurveySerializer,
+    responses={
+        200: openapi.Response("Survey updated successfully", SurveySerializer),
+        400: "Validation error",
+        404: "Survey not found",
+    },
+)
+@swagger_auto_schema(
+    method='patch',
+    tags=['Survey'],
+    operation_description="Partially update a survey.",
+    request_body=SurveySerializer,
+    responses={
+        200: openapi.Response("Survey partially updated", SurveySerializer),
+        400: "Validation error",
+        404: "Survey not found",
+    },
+)
+@swagger_auto_schema(
+    method='delete',
+    tags=['Survey'],
+    operation_description="Delete a survey by ID.",
+    responses={
+        204: "Survey deleted successfully",
+        404: "Survey not found",
+    },
+)
 @api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
 @permission_classes([permissions.SurveyPermissions])
 def survey_detail(request, pk):
