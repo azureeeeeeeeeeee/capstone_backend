@@ -19,7 +19,11 @@ class SurveySerializer(serializers.ModelSerializer):
     created_by = serializers.StringRelatedField(read_only=True)
     periode = PeriodeSerializer(read_only=True)
     periode_id = serializers.PrimaryKeyRelatedField(
-        queryset=Periode.objects.all(), source='periode', write_only=True
+        queryset=Periode.objects.all(),
+        source='periode', 
+        write_only=True,
+        required=False,
+        allow_null=True
     )
 
     class Meta:
