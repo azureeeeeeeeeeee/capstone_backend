@@ -1,5 +1,6 @@
 from django.urls import path
 from api.views import survey_views as views
+from api.views import answer_views as answer_views
 
 urlpatterns = [
     # ---- Survey ----
@@ -33,5 +34,33 @@ urlpatterns = [
         '<int:survey_id>/programs/<int:program_study_id>/questions/<int:pk>/',
         views.program_specific_question_detail,
         name='program-specific-question-detail'
+    ),
+
+    # ---- Answer ----
+    # List/create answers for a survey
+    path("<int:survey_id>/answers/", answer_views.answer_list_create, name="answer-list-create"),
+    
+    # Detail/update/delete specific answer
+    path("<int:survey_id>/answers/<int:pk>/", answer_views.answer_detail, name="answer-detail"),
+    
+    # Get answers by question
+    path(
+        "<int:survey_id>/sections/<int:section_id>/questions/<int:question_id>/answers/",
+        answer_views.answer_by_question,
+        name="answer-by-question"
+    ),
+    
+    # Get answers by program-specific question
+    path(
+        "<int:survey_id>/programs/<int:program_study_id>/questions/<int:question_id>/answers/",
+        answer_views.answer_by_program_question,
+        name="answer-by-program-question"
+    ),
+    
+    # Bulk create answers
+    path(
+        "<int:survey_id>/answers/bulk/",
+        answer_views.answer_bulk_create,
+        name="answer-bulk-create"
     ),
 ]

@@ -104,3 +104,46 @@ class ProgramSpecificQuestion(models.Model):
 
     def __str__(self):
         return f"{self.text[:60]}..."
+
+
+class Answer(models.Model):
+    """
+    Model untuk menyimpan jawaban dari user untuk pertanyaan survey.
+    Mendukung berbagai tipe pertanyaan: text, number, radio, checkbox, scale, dropdown.
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='answers')
+    survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name='answers')
+    question = models.ForeignKey(
+        Question, 
+        on_delete=models.CASCADE, 
+        related_name='answers',
+        null=True, 
+        blank=True
+    )
+    program_specific_question = models.ForeignKey(
+        ProgramSpecificQuestion,
+        on_delete=models.CASCADE,
+        related_name='answers',
+        null=True,
+        blank=True
+    )
+    # answer_value menyimpan jawaban dalam format JSON string untuk fleksibilitas
+    # Untuk text/number: string/number biasa
+    # Untuk radio/dropdown: string (single value)
+    # Untuk checkbox: JSON array ["option1", "option2"]
+    # Untuk scale: number (1-5)
+    answer_value = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        # Memastikan satu user hanya bisa menjawab satu kali per pertanyaan
+        unique_together = [
+            ['user', 'question'],
+            ['user', 'program_specific_question']
+        ]
+        ordering = ['-created_at']
+
+    def __str__(self):
+        question_text = self.question.text[:50] if self.question else self.program_specific_question.text[:50] if self.program_specific_question else "Unknown"
+        return f"{self.user.username} - {question_text} - {self.answer_value[:30]}"
