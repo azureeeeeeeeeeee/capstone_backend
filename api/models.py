@@ -1,6 +1,7 @@
 from django.db import models
 from accounts.models import User
 
+
 class Faculty(models.Model):
     name = models.CharField(max_length=255)
 
