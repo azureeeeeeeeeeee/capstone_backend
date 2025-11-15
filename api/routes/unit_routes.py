@@ -7,4 +7,7 @@ urlpatterns = [
 
     path('program-studies/', unit_views.program_study_list, name='programstudy-list'),
     path('program-studies/<int:pk>/', unit_views.program_study_detail, name='programstudy-detail'),
+
+    path('departments/', unit_views.department_list),
+    path('departments/<int:pk>/', unit_views.department_detail),
 ]

@@ -7,14 +7,22 @@ class Faculty(models.Model):
 
     def __str__(self):
         return self.name
+    
 
-
-class ProgramStudy(models.Model):
-    faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE, related_name="programs")
+class Department(models.Model):
+    faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE, related_name="departments")
     name = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.faculty.name})"
+
+
+class ProgramStudy(models.Model):
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name="programs", null=True)
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.name} ({self.department.name})"
 
 class Periode(models.Model):
     category = models.CharField(max_length=50, unique=True)
