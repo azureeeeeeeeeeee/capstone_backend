@@ -1,0 +1,1 @@
+cek QUICKSTART.md untuk cari tau cara setup
