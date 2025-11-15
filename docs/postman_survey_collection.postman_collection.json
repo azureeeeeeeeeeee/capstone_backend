@@ -1,0 +1,945 @@
+{
+  "info": {
+    "_postman_id": "0a4b88c1-c2ad-4fdd-9a5e-7f405f0b9f9d",
+    "name": "Capstone Backend - Survey & Answer API",
+    "description": "Koleksi Postman untuk menguji seluruh endpoint Survey, Section, Question, Program Specific Question, dan Answer pada capstone_backend.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Surveys",
+      "item": [
+        {
+          "name": "List Surveys",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/surveys/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Survey",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Survey Exit 2025\",\n  \"description\": \"Survey kelulusan mahasiswa\",\n  \"survey_type\": \"exit\",\n  \"periode_id\": {{periode_id}},\n  \"is_active\": true,\n  \"start_at\": \"2025-11-01T00:00:00Z\",\n  \"end_at\": \"2025-12-31T23:59:59Z\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/surveys/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Survey Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Survey (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Survey Exit 2025 (Revisi)\",\n  \"is_active\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Survey",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                ""
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Sections",
+      "item": [
+        {
+          "name": "List Sections",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/sections/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "sections",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Section",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Profil Lulusan\",\n  \"description\": \"Identitas lulusan\",\n  \"order\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/sections/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "sections",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Section Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/sections/{{section_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "sections",
+                "{{section_id}}",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Section (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Update deskripsi section\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/sections/{{section_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "sections",
+                "{{section_id}}",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Section",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/sections/{{section_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "sections",
+                "{{section_id}}",
+                ""
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Questions",
+      "item": [
+        {
+          "name": "List Questions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/sections/{{section_id}}/questions/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "sections",
+                "{{section_id}}",
+                "questions",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Question",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Seberapa puas Anda dengan fasilitas kampus?\",\n  \"question_type\": \"radio\",\n  \"options\": [\"Sangat Puas\", \"Puas\", \"Cukup\", \"Kurang\"],\n  \"order\": 1,\n  \"is_required\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/sections/{{section_id}}/questions/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "sections",
+                "{{section_id}}",
+                "questions",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Question Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/sections/{{section_id}}/questions/{{question_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "sections",
+                "{{section_id}}",
+                "questions",
+                "{{question_id}}",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Question (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Pertanyaan tentang kepuasan fasilitas\",\n  \"order\": 2\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/sections/{{section_id}}/questions/{{question_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "sections",
+                "{{section_id}}",
+                "questions",
+                "{{question_id}}",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Question",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/sections/{{section_id}}/questions/{{question_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "sections",
+                "{{section_id}}",
+                "questions",
+                "{{question_id}}",
+                ""
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Program Specific Questions",
+      "item": [
+        {
+          "name": "List Program Questions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/programs/{{program_study_id}}/questions/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "programs",
+                "{{program_study_id}}",
+                "questions",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Program Question",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Bagaimana relevansi kurikulum dengan kebutuhan industri?\",\n  \"question_type\": \"checkbox\",\n  \"options\": [\"Sangat Relevan\", \"Relevan\", \"Cukup\", \"Kurang\"],\n  \"order\": 1,\n  \"is_required\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/programs/{{program_study_id}}/questions/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "programs",
+                "{{program_study_id}}",
+                "questions",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Program Question Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/programs/{{program_study_id}}/questions/{{program_question_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "programs",
+                "{{program_study_id}}",
+                "questions",
+                "{{program_question_id}}",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Program Question (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": 2\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/programs/{{program_study_id}}/questions/{{program_question_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "programs",
+                "{{program_study_id}}",
+                "questions",
+                "{{program_question_id}}",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Program Question",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/programs/{{program_study_id}}/questions/{{program_question_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "programs",
+                "{{program_study_id}}",
+                "questions",
+                "{{program_question_id}}",
+                ""
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Answers",
+      "item": [
+        {
+          "name": "List Answers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/answers/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "answers",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Submit Answer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question\": {{question_id}},\n  \"answer_value\": \"Puas\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/answers/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "answers",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Answer Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/answers/{{answer_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "answers",
+                "{{answer_id}}",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Answer (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answer_value\": \"Sangat Puas\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/answers/{{answer_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "answers",
+                "{{answer_id}}",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Answer",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/answers/{{answer_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "answers",
+                "{{answer_id}}",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Answers by Question",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/sections/{{section_id}}/questions/{{question_id}}/answers/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "sections",
+                "{{section_id}}",
+                "questions",
+                "{{question_id}}",
+                "answers",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Answers by Program Question",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/programs/{{program_study_id}}/questions/{{program_question_id}}/answers/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "programs",
+                "{{program_study_id}}",
+                "questions",
+                "{{program_question_id}}",
+                "answers",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Bulk Submit Answers",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answers\": [\n    {\n      \"question\": {{question_id}},\n      \"answer_value\": \"Sangat Puas\"\n    },\n    {\n      \"program_specific_question\": {{program_question_id}},\n      \"answer_value\": [\"Sangat Relevan\", \"Relevan\"]\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/surveys/{{survey_id}}/answers/bulk/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "surveys",
+                "{{survey_id}}",
+                "answers",
+                "bulk",
+                ""
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "survey_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "section_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "question_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "program_study_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "program_question_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "answer_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "periode_id",
+      "value": "1",
+      "type": "string"
+    }
+  ]
+}
+
