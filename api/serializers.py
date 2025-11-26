@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Survey, ProgramStudy, Section, Question, ProgramSpecificQuestion, Faculty, Periode, Answer, Department
+from .models import Survey, ProgramStudy, Section, Question, ProgramSpecificQuestion, Faculty, Periode, Answer, Department, QuestionBranch
 import json
 
 class PeriodeSerializer(serializers.ModelSerializer):
@@ -59,10 +59,16 @@ class SectionSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['created_at']
 
+class QuestionBranchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QuestionBranch
+        fields = ['answer_value', 'next_section']
 
 class QuestionSerializer(serializers.ModelSerializer):
     section_title = serializers.CharField(source='section.title', read_only=True)
     survey_title = serializers.CharField(source='section.survey.title', read_only=True)
+
+    branches = QuestionBranchSerializer(many=True, read_only=True)
 
     class Meta:
         model = Question
@@ -78,25 +84,108 @@ class QuestionSerializer(serializers.ModelSerializer):
             'source',
             'description',
             'order',
+            'branches',
             'is_required',
             'created_at',
         ]
         read_only_fields = ['created_at']
 
     def to_internal_value(self, data):
-
+        # Convert list -> JSON string for options
         if isinstance(data.get('options'), list):
             data['options'] = json.dumps(data['options'])
         return super().to_internal_value(data)
 
     def to_representation(self, instance):
-
         rep = super().to_representation(instance)
         try:
             rep['options'] = json.loads(instance.options) if instance.options else []
         except Exception:
             rep['options'] = instance.options.splitlines() if instance.options else []
         return rep
+
+    # ==========================
+    # MAIN VALIDATION
+    # ==========================
+    def validate(self, data):
+        branches_data = self.initial_data.get('branches')
+
+        # If no branches submitted → skip validation
+        if not branches_data:
+            return data
+
+        # Check question_type
+        q_type = data.get('question_type', getattr(self.instance, 'question_type', None))
+
+        if q_type != 'radio':
+            raise serializers.ValidationError("Branching is only allowed for 'radio' (single choice) question type.")
+
+        # Ensure options exist
+        raw_options = self.initial_data.get('options')
+        if raw_options is None and self.instance:
+            raw_options = self.instance.options
+
+        # Parse options
+        try:
+            options = json.loads(raw_options) if isinstance(raw_options, str) else raw_options
+        except:
+            options = []
+
+        if not isinstance(options, list):
+            raise serializers.ValidationError("Invalid options format.")
+
+        # Validate each branch.answer_value
+        for b in branches_data:
+            ans = b.get("answer_value")
+            if ans not in options:
+                raise serializers.ValidationError(
+                    f"Branch answer_value '{ans}' does not exist in options."
+                )
+
+        return data
+
+    # ==========================
+    # CREATE
+    # ==========================
+    def create(self, validated_data):
+        branches_data = self.initial_data.get('branches', [])
+
+        question = Question.objects.create(**validated_data)
+
+        # Create branches
+        for b in branches_data:
+            QuestionBranch.objects.create(
+                question=question,
+                answer_value=b['answer_value'],
+                next_section_id=b['next_section']
+            )
+
+        return question
+
+    # ==========================
+    # UPDATE
+    # ==========================
+    def update(self, instance, validated_data):
+        branches_data = self.initial_data.get('branches')
+
+        # update main question fields
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        # If branches submitted, replace all old ones
+        if branches_data is not None:
+            QuestionBranch.objects.filter(question=instance).delete()
+            for b in branches_data:
+                QuestionBranch.objects.create(
+                    question=instance,
+                    answer_value=b['answer_value'],
+                    next_section_id=b['next_section']
+                )
+
+        return instance
+
+
 
 class ProgramSpecificQuestionSerializer(serializers.ModelSerializer):
     program_study_name = serializers.CharField(source='program_study.name', read_only=True)

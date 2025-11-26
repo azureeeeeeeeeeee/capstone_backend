@@ -156,3 +156,11 @@ class Answer(models.Model):
     def __str__(self):
         question_text = self.question.text[:50] if self.question else self.program_specific_question.text[:50] if self.program_specific_question else "Unknown"
         return f"{self.user.username} - {question_text} - {self.answer_value[:30]}"
+
+class QuestionBranch(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="branches")
+    answer_value = models.CharField(max_length=255)  # e.g. "Sudah bekerja"
+    next_section = models.ForeignKey(Section, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.question.text[:30]} -> {self.next_section.title}"
