@@ -252,6 +252,9 @@ class AnswerSerializer(serializers.ModelSerializer):
     Mendukung berbagai tipe pertanyaan dengan validasi yang sesuai.
     """
     user_username = serializers.CharField(source='user.username', read_only=True)
+    user_nim = serializers.CharField(source='user.nim', read_only=True)
+    user_email = serializers.CharField(source='user.email', read_only=True)
+    user_program_study = serializers.CharField(source='user.program_study.name', read_only=True)
     question_text = serializers.CharField(source='question.text', read_only=True)
     question_type = serializers.CharField(source='question.question_type', read_only=True)
     program_specific_question_text = serializers.CharField(
@@ -267,8 +270,10 @@ class AnswerSerializer(serializers.ModelSerializer):
         model = Answer
         fields = [
             'id',
-            'user',
             'user_username',
+            'user_nim',
+            'user_email',
+            'user_program_study',
             'survey',
             'question',
             'question_text',
