@@ -62,9 +62,8 @@ class User(AbstractUser):
         ('lv2', 'Level 2'),
     )
 
-    id = models.CharField(primary_key=True, max_length=50)
+    id = models.CharField(primary_key=True, max_length=50) #nim
     username = models.CharField("fullname", max_length=255)
-    nim = models.CharField(max_length=50, null=True, blank=True)
     role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True, blank=True)
     program_study = models.ForeignKey(
         'api.ProgramStudy',

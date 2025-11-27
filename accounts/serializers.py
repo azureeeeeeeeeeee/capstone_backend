@@ -62,7 +62,7 @@ class UserCreationSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'username', 'email',
             'role', 'program_study',
-            'address', 'phone_number', 'nim'
+            'address', 'phone_number'
         ]
         # fields = '__all__'
 

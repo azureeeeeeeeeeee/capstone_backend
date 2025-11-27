@@ -251,8 +251,8 @@ class AnswerSerializer(serializers.ModelSerializer):
     Serializer untuk menyimpan dan mengambil jawaban survey.
     Mendukung berbagai tipe pertanyaan dengan validasi yang sesuai.
     """
+    user_id = serializers.CharField(source='user.id', read_only=True)
     user_username = serializers.CharField(source='user.username', read_only=True)
-    user_nim = serializers.CharField(source='user.nim', read_only=True)
     user_email = serializers.CharField(source='user.email', read_only=True)
     user_program_study = serializers.CharField(source='user.program_study.name', read_only=True)
     question_text = serializers.CharField(source='question.text', read_only=True)
@@ -270,8 +270,8 @@ class AnswerSerializer(serializers.ModelSerializer):
         model = Answer
         fields = [
             'id',
+            'user_id',
             'user_username',
-            'user_nim',
             'user_email',
             'user_program_study',
             'survey',
