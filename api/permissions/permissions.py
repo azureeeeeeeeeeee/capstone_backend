@@ -54,3 +54,7 @@ class AnswerPermissions(BasePermission):
         if request.method in ['POST', 'GET']:
             return request.user.is_authenticated and request.user.role.name in ['Admin', 'Tracer', 'Alumni']
         return True
+    
+class ConfigPermissions(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.role.name in ['Admin']

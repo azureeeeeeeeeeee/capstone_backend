@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import SupervisorAnswer, Survey, ProgramStudy, Section, Question, ProgramSpecificQuestion, Faculty, Periode, Answer, Department, QuestionBranch
+from .models import SupervisorAnswer, Survey, ProgramStudy, Section, Question, ProgramSpecificQuestion, Faculty, Periode, Answer, Department, QuestionBranch, SystemConfig
 import json
 
 class PeriodeSerializer(serializers.ModelSerializer):
@@ -442,3 +442,9 @@ class SupervisorAnswerSerializer(serializers.ModelSerializer):
             "token": {"read_only": True},
             "survey": {"read_only": True},
         }
+
+
+class SystemConfigSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SystemConfig
+        fields = ['id', 'key', 'value']
