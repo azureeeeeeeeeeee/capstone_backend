@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from accounts.models import User
-from api.models import Faculty, ProgramStudy, Department
+from api.models import Faculty, ProgramStudy, Department, SystemConfig
 from accounts.models import Role, User
 
 
@@ -119,5 +119,8 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS("Default admin user created: admin / admin123"))
         else:
             self.stdout.write(self.style.WARNING("Admin user already exists, skipped."))
+
+
+        SystemConfig.objects.get_or_create(key="QUESTION_CODE_SPV_EMAIL", value="SPV_02")
 
         self.stdout.write(self.style.SUCCESS("Seeding completed successfully!"))
