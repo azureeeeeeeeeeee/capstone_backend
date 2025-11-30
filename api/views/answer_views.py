@@ -2,6 +2,7 @@ import os
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 from api.models import SupervisorAnswer, Survey, Question, ProgramSpecificQuestion, Answer, SystemConfig, SupervisorToken
 from api.serializers import AnswerSerializer, SupervisorAnswerSerializer
 from api.permissions import permissions
@@ -311,6 +312,7 @@ def answer_bulk_create(request, survey_id):
 
     if survey.survey_type == "lv1":
         token_obj = SupervisorToken.objects.create(alumni=request.user)
+        skp_survey = Survey.objects.get(survey_type='skp')
         token = str(token_obj.token)
 
         subject = f"Pengisian survey kepuasan pengguna - {request.user.username}"
@@ -324,7 +326,7 @@ def answer_bulk_create(request, survey_id):
 
             Mohon untuk mengisi survey kepuasan pengguna untuk saudara/i {request.user.username} dengan mengisi link berikut (Mohon untuk tidak menyebarkan linknya)
 
-            {os.getenv("FRONTEND_URL")}/survey/skp?spv_id={token}
+            {os.getenv("FRONTEND_URL")}/surveys/{skp_survey.id}/skp?token={token}
 
             Terima kasih,
             Tim Tracer Study ITK
@@ -416,6 +418,7 @@ def answer_bulk_create(request, survey_id):
     }
 )
 @api_view(["POST"])
+@permission_classes([AllowAny])
 def supervisor_answer_bulk(request, survey_id):
     try:
         skp_survey = Survey.objects.get(id=survey_id)
