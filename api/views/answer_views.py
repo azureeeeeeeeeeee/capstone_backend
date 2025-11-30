@@ -251,7 +251,7 @@ def answer_by_program_question(request, survey_id, program_study_id, question_id
     },
 )
 @api_view(['POST'])
-@permission_classes([permissions.SurveyPermissions])
+@permission_classes([permissions.AnswerPermissions])
 def answer_bulk_create(request, survey_id):
     """
     Menyimpan multiple jawaban sekaligus untuk survey
@@ -310,14 +310,17 @@ def answer_bulk_create(request, survey_id):
     
 
     if survey.survey_type == "lv1":
-        token_obj = SupervisorToken.objects.create(user=request.user)
+        token_obj = SupervisorToken.objects.create(alumni=request.user)
         token = str(token_obj.token)
 
         subject = f"Pengisian survey kepuasan pengguna - {request.user.username}"
         message = f"""
             Hello supervisor,
 
-            {request.user.username} telah mengisi Tracer Study Survey level 1
+            Mahasiswa dengan identitas dibawah ini telah mengisi Tracer Study Survey level 1 ITK,
+            Nama : {request.user.username}
+            NIM : {request.user.id}
+            Program Studi : {request.user.program_study.name}
 
             Mohon untuk mengisi survey kepuasan pengguna untuk saudara/i {request.user.username} dengan mengisi link berikut (Mohon untuk tidak menyebarkan linknya)
 
