@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Survey, ProgramStudy, Section, Question, ProgramSpecificQuestion, Faculty, Periode, Answer, Department, QuestionBranch
+from .models import SupervisorAnswer, Survey, ProgramStudy, Section, Question, ProgramSpecificQuestion, Faculty, Periode, Answer, Department, QuestionBranch
 import json
 
 class PeriodeSerializer(serializers.ModelSerializer):
@@ -433,3 +433,12 @@ class AnswerSerializer(serializers.ModelSerializer):
                 rep['answer_value'] = instance.answer_value
         
         return rep
+    
+class SupervisorAnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SupervisorAnswer
+        fields = ['id', 'token', 'survey', 'question', 'answer_value', 'created_at']
+        extra_kwargs = {
+            "token": {"read_only": True},
+            "survey": {"read_only": True},
+        }
