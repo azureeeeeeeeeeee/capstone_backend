@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.models import ProgramStudy, Faculty, Survey, ProgramSpecificQuestion, Periode, Section, Question, Answer, Department
+from api.models import ProgramStudy, Faculty, Survey, ProgramSpecificQuestion, Periode, Section, Question, Answer, Department, SupervisorAnswer, SupervisorToken, SystemConfig
 
 # Register your models here.
 admin.site.register(ProgramStudy)
@@ -11,3 +11,6 @@ admin.site.register(Question)
 admin.site.register(ProgramSpecificQuestion)
 admin.site.register(Periode)
 admin.site.register(Answer)
+admin.site.register(SupervisorAnswer)
+admin.site.register(SystemConfig)
+admin.site.register(SupervisorToken)

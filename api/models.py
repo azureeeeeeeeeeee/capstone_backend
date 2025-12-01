@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from accounts.models import User
 
@@ -164,3 +165,53 @@ class QuestionBranch(models.Model):
 
     def __str__(self):
         return f"{self.question.text[:30]} -> {self.next_section.title}"
+
+class SupervisorToken(models.Model):
+    alumni = models.ForeignKey(User, on_delete=models.CASCADE)
+    token = models.UUIDField(default=uuid.uuid4, unique=True)
+    is_used = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class SystemConfig(models.Model):
+    key = models.CharField(max_length=100, unique=True)
+    value = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.key} = {self.value}"
+    
+
+class SupervisorAnswer(models.Model):
+    token = models.ForeignKey(
+        SupervisorToken,
+        on_delete=models.CASCADE,
+        related_name='answers'
+    )
+    survey = models.ForeignKey(
+        Survey,
+        on_delete=models.CASCADE,
+        related_name='supervisor_answers'
+    )
+    question = models.ForeignKey(
+        Question,
+        on_delete=models.CASCADE,
+        related_name='supervisor_answers'
+    )
+    
+    # boleh null untuk pertanyaan opsional
+    answer_value = models.TextField(null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = [
+            ['token', 'question']
+        ]
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['token']),
+            models.Index(fields=['survey']),
+        ]
+
+    def __str__(self):
+        return f"Supervisor {self.token.user.username} - {self.question.text[:40]}"
