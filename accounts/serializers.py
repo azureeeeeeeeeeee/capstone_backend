@@ -75,3 +75,31 @@ class UserCreationSerializer(serializers.ModelSerializer):
         user.set_password(f"{validated_data['id']}-{validated_data['phone_number']}")
         user.save()
         return user
+
+class AdminPasswordResetSerializer(serializers.Serializer):
+    new_password = serializers.CharField(read_only=True)
+
+    def save(self, user):
+        phone = user.phone_number or "0000"
+        new_pw = f"{user.id}-{phone}"
+        user.set_password(new_pw)
+        user.save()
+        return new_pw
+
+class UserChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField()
+    new_password = serializers.CharField()
+
+    def validate(self, data):
+        user = self.context["request"].user
+
+        if not user.check_password(data["old_password"]):
+            raise serializers.ValidationError({"old_password": "Incorrect old password"})
+
+        return data
+
+    def save(self, **kwargs):
+        user = self.context["request"].user
+        user.set_password(self.validated_data["new_password"])
+        user.save()
+        return user
