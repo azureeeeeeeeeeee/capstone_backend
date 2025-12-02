@@ -4,7 +4,8 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import CustomTokenObtainPairSerializer, RegisterSerializer, UserSerializer, AdminPasswordResetSerializer, UserChangePasswordSerializer
+from .serializers import CustomTokenObtainPairSerializer, RegisterSerializer, UserSerializer, AdminPasswordResetSerializer, UserChangePasswordSerializer, UserCreationSerializer
+from rest_framework.views import APIView    
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from .models import User
 from django.contrib.auth import authenticate
@@ -105,3 +106,35 @@ def user_change_password(request):
         return Response({"message": "Password updated successfully"}, status=200)
 
     return Response(serializer.errors, status=400)
+
+class UserSelfView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        """Return logged in user's own data"""
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
+
+    def patch(self, request):
+        """Partial update (recommended)"""
+        serializer = UserCreationSerializer(
+            request.user,
+            data=request.data,
+            partial=True
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request):
+        """Full update if needed"""
+        serializer = UserCreationSerializer(
+            request.user,
+            data=request.data,
+            partial=False
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
