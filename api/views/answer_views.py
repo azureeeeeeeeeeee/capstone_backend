@@ -299,18 +299,18 @@ def answer_bulk_create(request, survey_id):
             status=status.HTTP_207_MULTI_STATUS  # Multi-Status
         )
     
-    code = SystemConfig.objects.get(key="QUESTION_CODE_SPV_EMAIL").value
-    question_spv = Question.objects.get(code=code)
-    answer_spv = Answer.objects.get(
-        user=request.user,
-        survey=survey,
-        question=question_spv
-    )
-    spv_email = answer_spv.answer_value
 
     
 
     if survey.survey_type == "lv1":
+        code = SystemConfig.objects.get(key="QUESTION_CODE_SPV_EMAIL").value
+        question_spv = Question.objects.get(code=code)
+        answer_spv = Answer.objects.get(
+            user=request.user,
+            survey=survey,
+            question=question_spv
+        )
+        spv_email = answer_spv.answer_value
         token_obj = SupervisorToken.objects.create(alumni=request.user)
         skp_survey = Survey.objects.get(survey_type='skp')
         token = str(token_obj.token)
