@@ -3,12 +3,6 @@ from django.db import models
 
 class Role(models.Model):
     name = models.CharField(max_length=30)
-    program_study = models.ForeignKey(
-        'api.ProgramStudy',
-        on_delete=models.CASCADE,
-        null=True, blank=True,
-        related_name='roles'
-    )
 
     def __str__(self):
         return self.name
