@@ -214,4 +214,4 @@ class SupervisorAnswer(models.Model):
         ]
 
     def __str__(self):
-        return f"Supervisor {self.token.user.username} - {self.question.text[:40]}"
+        return f"Supervisor {self.token.alumni.username} - {self.question.text[:40]}"
