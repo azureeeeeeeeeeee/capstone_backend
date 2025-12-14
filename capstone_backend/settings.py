@@ -160,6 +160,7 @@ STATIC_URL = "/static/"
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "10.0.2.2"
 ]
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
