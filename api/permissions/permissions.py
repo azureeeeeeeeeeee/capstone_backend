@@ -8,28 +8,31 @@ class SurveyPermissions(BasePermission):
 
 class ProgramSpecificQuestionPermissions(BasePermission):
     def has_permission(self, request, view):
-        if request.method in ['GET']:
-            return request.user.is_authenticated
-        
-        if not request.user.is_authenticated or not request.user.role:
+        user = request.user
+        if not user.is_authenticated or not user.role:
             return False
 
-        role_name = request.user.role.name
+        role = user.role.name
 
-        if role_name in ['Admin', 'Tracer']:
+        # Semua boleh lihat
+        if request.method == 'GET':
             return True
 
-        if role_name.startswith("Prodi "):
+        # Admin & Tracer full akses
+        if role in ['Admin', 'Tracer']:
+            return True
+
+        # Tim Prodi hanya prodi sendiri
+        if role == 'Tim Prodi':
             program_study_id = view.kwargs.get('program_study_id')
-            from api.models import ProgramStudy
-            try:
-                program = ProgramStudy.objects.get(id=program_study_id)
-            except ProgramStudy.DoesNotExist:
-                return False
-            expected_role = f"Prodi {program.name}"
-            return role_name == expected_role
+            return (
+                user.program_study
+                and str(user.program_study.id) == str(program_study_id)
+            )
 
         return False
+
+
     
 
 class UnitPermissions(BasePermission):
@@ -38,9 +41,18 @@ class UnitPermissions(BasePermission):
             return request.user.is_authenticated and request.user.role.name in ['Admin']
         return True
     
+# class PeriodePermissions(BasePermission):
+#     def has_permission(self, request, view):
+#         return request.user.is_authenticated and request.user.role.name in ['Admin', 'Tracer']
 class PeriodePermissions(BasePermission):
     def has_permission(self, request, view):
-        return request.user.is_authenticated and request.user.role.name in ['Admin', 'Tracer']
+        if request.method == 'GET':
+            return request.user.is_authenticated
+        return (
+            request.user.is_authenticated
+            and request.user.role.name in ['Admin', 'Tracer']
+        )
+
     
 class RolePermissions(BasePermission):
     def has_permission(self, request, view):
@@ -54,7 +66,7 @@ class AnswerPermissions(BasePermission):
         if request.method in ['POST', 'GET']:
             return request.user.is_authenticated and request.user.role.name in ['Alumni']
         return True
-    
+
 class ConfigPermissions(BasePermission):
     def has_permission(self, request, view):
         return request.user.is_authenticated and request.user.role.name in ['Admin']

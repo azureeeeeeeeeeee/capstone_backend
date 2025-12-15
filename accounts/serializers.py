@@ -50,6 +50,7 @@ class RoleSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 
+
 class UserCreationSerializer(serializers.ModelSerializer):
     # role_name = serializers.CharField(source='role.name', read_only=True)
     role = serializers.PrimaryKeyRelatedField(queryset=Role.objects.all())
