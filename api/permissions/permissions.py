@@ -8,28 +8,27 @@ class SurveyPermissions(BasePermission):
 
 class ProgramSpecificQuestionPermissions(BasePermission):
     def has_permission(self, request, view):
-        if request.method in ['GET']:
-            return request.user.is_authenticated
-        
         if not request.user.is_authenticated or not request.user.role:
             return False
 
         role_name = request.user.role.name
+        if request.method == 'GET':
+            return True
 
         if role_name in ['Admin', 'Tracer']:
             return True
 
-        if role_name.startswith("Prodi "):
+        if role_name == 'Tim Prodi':
             program_study_id = view.kwargs.get('program_study_id')
-            from api.models import ProgramStudy
-            try:
-                program = ProgramStudy.objects.get(id=program_study_id)
-            except ProgramStudy.DoesNotExist:
+            if not program_study_id:
                 return False
-            expected_role = f"Prodi {program.name}"
-            return role_name == expected_role
+            return (
+                request.user.program_study
+                and str(request.user.program_study.id) == str(program_study_id)
+            )
 
         return False
+
     
 
 class UnitPermissions(BasePermission):
@@ -54,7 +53,7 @@ class AnswerPermissions(BasePermission):
         if request.method in ['POST', 'GET']:
             return request.user.is_authenticated and request.user.role.name in ['Alumni']
         return True
-    
+
 class ConfigPermissions(BasePermission):
     def has_permission(self, request, view):
         return request.user.is_authenticated and request.user.role.name in ['Admin']
