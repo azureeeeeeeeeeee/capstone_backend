@@ -45,11 +45,10 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class RoleSerializer(serializers.ModelSerializer):
-    program_study_name = serializers.CharField(source='program_study.name', read_only=True)
-
     class Meta:
         model = Role
-        fields = ['id', 'name', 'program_study', 'program_study_name']
+        fields = ['id', 'name']
+
 
 
 class UserCreationSerializer(serializers.ModelSerializer):
