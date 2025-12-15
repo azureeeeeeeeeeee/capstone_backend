@@ -1,0 +1,26 @@
+{
+  "n_clusters": 4,
+  "model_type": "KMeans",
+  "features_used": [
+    "F502",
+    "F505",
+    "F14_enc",
+    "F5d_enc",
+    "F1101_enc"
+  ],
+  "scaler_type": "StandardScaler",
+  "cluster_labels": {
+    "0": "Cluster 0 - Low salary, high hours",
+    "1": "Cluster 1 - Mid salary, mid hours",
+    "2": "Cluster 2 - High salary, low hours",
+    "3": "Cluster 3 - Mid-high salary, standard hours"
+  },
+  "preprocessing_steps": [
+    "StandardScaler normalization",
+    "Numeric features only"
+  ],
+  "pca_variance": [
+    0.3463658862063304,
+    0.22850896296339737
+  ]
+}

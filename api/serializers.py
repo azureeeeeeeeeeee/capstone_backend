@@ -2,6 +2,57 @@ from rest_framework import serializers
 from .models import SupervisorAnswer, Survey, ProgramStudy, Section, Question, ProgramSpecificQuestion, Faculty, Periode, Answer, Department, QuestionBranch, SystemConfig
 import json
 
+class ClassificationInputSerializer(serializers.Serializer):
+    F502 = serializers.FloatField(required=False, allow_null=True, help_text="Waktu tunggu kerja (bulan)")
+    F14 = serializers.CharField(required=False, allow_blank=True, help_text="Keeratan hubungan bidang studi dengan pekerjaan")
+    F5d = serializers.FloatField(required=False, allow_null=True, help_text="Tingkat tempat kerja")
+    F1101 = serializers.CharField(required=False, allow_blank=True, help_text="Jenis instansi/perusahaan")
+    Years_Since_Graduation = serializers.FloatField(required=False, allow_null=True, help_text="Tahun sejak lulus")
+    Gap_Etika = serializers.FloatField(required=False, allow_null=True, help_text="Gap kompetensi etika")
+    Gap_Keahlian = serializers.FloatField(required=False, allow_null=True, help_text="Gap kompetensi keahlian")
+    Gap_English = serializers.FloatField(required=False, allow_null=True, help_text="Gap kompetensi bahasa Inggris")
+    Gap_IT = serializers.FloatField(required=False, allow_null=True, help_text="Gap kompetensi IT")
+    Gap_Komunikasi = serializers.FloatField(required=False, allow_null=True, help_text="Gap kompetensi komunikasi")
+    Gap_Teamwork = serializers.FloatField(required=False, allow_null=True, help_text="Gap kompetensi teamwork")
+    Gap_Development = serializers.FloatField(required=False, allow_null=True, help_text="Gap kompetensi development")
+
+
+class ClassificationOutputSerializer(serializers.Serializer):
+    prediction = serializers.IntegerField(help_text="Predicted class ID")
+    predicted_label = serializers.CharField(help_text="Predicted class label")
+    probabilities = serializers.DictField(help_text="Probabilities for each class")
+    confidence = serializers.FloatField(help_text="Confidence score (max probability)")
+
+
+class ClusteringInputSerializer(serializers.Serializer):
+    F502 = serializers.FloatField(required=True, help_text="Waktu tunggu kerja (bulan)")
+    F505 = serializers.FloatField(required=True, help_text="Gaji/pendapatan per bulan")
+    F14_enc = serializers.FloatField(required=True, help_text="Encoded: Keeratan hubungan bidang studi")
+    F5d_enc = serializers.FloatField(required=True, help_text="Encoded: Tingkat pendidikan yang sesuai")
+    F1101_enc = serializers.FloatField(required=True, help_text="Encoded: Jenis instansi")
+
+
+class ClusteringOutputSerializer(serializers.Serializer):
+    cluster = serializers.IntegerField(help_text="Assigned cluster ID")
+    cluster_label = serializers.CharField(help_text="Cluster label/name")
+
+
+class ClusteringBatchOutputSerializer(serializers.Serializer):
+    results = ClusteringOutputSerializer(many=True)
+
+
+class ForecastOutputSerializer(serializers.Serializer):
+    model_info = serializers.DictField(help_text="Information about the model")
+    training_period = serializers.DictField(help_text="Training period information")
+    historical_data = serializers.ListField(help_text="Historical data points")
+    forecast_data = serializers.ListField(help_text="Forecasted data points")
+    forecast_years = serializers.ListField(help_text="Years for forecast")
+    forecast_values = serializers.ListField(help_text="Forecasted values")
+
+
+class ForecastCustomSerializer(serializers.Serializer):
+    steps = serializers.IntegerField(default=5, min_value=1, max_value=20, help_text="Number of periods to forecast")
+
 class PeriodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Periode

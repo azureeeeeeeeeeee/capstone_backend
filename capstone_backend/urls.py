@@ -26,9 +26,11 @@ schema_view = get_schema_view(
         default_version="v1",
         description="API documentation for authentication",
         contact=openapi.Contact(email="support@example.com"),
+        license=openapi.License(name="BSD License"),
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),
+    authentication_classes=[],
 )
 
 urlpatterns = [
