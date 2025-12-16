@@ -159,9 +159,11 @@ def answer_by_program_question(request, survey_id, program_study_id, question_id
     return Response(AnswerSerializer(answers, many=True).data)
 
 
-# =====================================================
-# BULK ANSWER CREATE (ALUMNI)
-# =====================================================
+
+
+
+
+
 @api_view(['POST'])
 @permission_classes([permissions.AnswerPermissions])
 def answer_bulk_create(request, survey_id):
@@ -218,9 +220,65 @@ Link:
     return Response(results, status=201)
 
 
-# =====================================================
-# SUPERVISOR SKP BULK ANSWER (TOKEN)
-# =====================================================
+
+
+
+@swagger_auto_schema(
+    method='post',
+    tags=['Supervisor Answer'],
+    operation_description=(
+        "Submit supervisor answers in bulk for a SKP survey using a unique token. "
+        "Each token can only be used once."
+    ),
+    manual_parameters=[
+        openapi.Parameter(
+            'token',
+            openapi.IN_QUERY,
+            description="Supervisor unique token",
+            type=openapi.TYPE_STRING,
+            required=True
+        )
+    ],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['answers'],
+        properties={
+            'answers': openapi.Schema(
+                type=openapi.TYPE_ARRAY,
+                items=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    required=['question_id', 'answer_value'],
+                    properties={
+                        'question_id': openapi.Schema(
+                            type=openapi.TYPE_INTEGER,
+                            description='Question ID'
+                        ),
+                        'answer_value': openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description='Answer value'
+                        ),
+                    }
+                )
+            )
+        }
+    ),
+    responses={
+        201: openapi.Response(
+            description="Answers submitted successfully",
+            examples={
+                "application/json": {
+                    "detail": "Answers submitted successfully."
+                }
+            }
+        ),
+        400: openapi.Response(
+            description="Bad request (missing/invalid token or token already used)"
+        ),
+        404: openapi.Response(
+            description="Survey not found or invalid"
+        ),
+    },
+)
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def supervisor_answer_bulk(request, survey_id):
