@@ -158,9 +158,12 @@ AUTH_USER_MODEL = 'accounts.User'
 
 STATIC_URL = "/static/"
 
+# CORS Configuration
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "http://10.0.2.2"
+    "http://127.0.0.1:3000",
+    "http://10.0.2.2:3000",  # Android Emulator
+    "http://192.168.1.8:3000",  # Physical Device (update IP sesuai network Anda)
 ]
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
