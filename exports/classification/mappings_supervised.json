@@ -1,0 +1,18 @@
+{
+  "f14_map": {
+    "Sangat Erat": 1,
+    "Erat": 2,
+    "Cukup Erat": 3,
+    "Kurang Erat": 4,
+    "Tidak Sama Sekali": 5
+  },
+  "f1101_map": {
+    "Instansi pemerintah": 1,
+    "Organisasi non-profit/Lembaga Swadaya Masyarakat": 2,
+    "Perusahaan swasta": 3,
+    "Wiraswasta/perusahaan sendiri": 4,
+    "Lainnya": 5,
+    "BUMN/BUMD": 6,
+    "Institusi/Organisasi Multilateral": 7
+  }
+}
