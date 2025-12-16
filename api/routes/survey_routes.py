@@ -1,7 +1,7 @@
 from django.urls import path
 from api.views import survey_views as views
 from api.views import answer_views as answer_views
-from api.views import mail_views
+# from api.views import mail_views
 
 urlpatterns = [
     # ---- Survey ----
@@ -63,12 +63,6 @@ urlpatterns = [
         "<int:survey_id>/answers/bulk/",
         answer_views.answer_bulk_create,
         name="answer-bulk-create"
-    ),
-
-    path(
-        "mail/",
-        mail_views.submit_answer,
-        name="submit-answer"
     ),
 
     path("supervisor/<int:survey_id>/answers/bulk", answer_views.supervisor_answer_bulk, name="spv-submit-answer")
