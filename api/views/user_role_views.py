@@ -30,7 +30,7 @@ from drf_yasg import openapi
 @permission_classes([permissions.RolePermissions])
 def role_list_create(request):
     if request.method == 'GET':
-        roles = Role.objects.select_related('program_study').all()
+        roles = Role.objects.all()
         serializer = RoleSerializer(roles, many=True)
         return Response(serializer.data)
 

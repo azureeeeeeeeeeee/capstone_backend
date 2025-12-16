@@ -1,0 +1,41 @@
+{
+  "model": {
+    "model_name": "ARIMAResultsWrapper",
+    "arima_order": [
+      1,
+      1,
+      1
+    ],
+    "aic": 130.11191865468012,
+    "bic": 130.7035923866888,
+    "training_period": {
+      "start_year": 2016,
+      "end_year": 2025,
+      "n_years": 10
+    },
+    "forecast_horizon": 5,
+    "forecast_years": [
+      2026,
+      2027,
+      2028,
+      2029,
+      2030
+    ],
+    "forecast_values": [
+      520.8789266381489,
+      453.5163710014477,
+      500.03527306735623,
+      467.9104786773023,
+      490.0950610464452
+    ],
+    "exported_at": "2025-12-14T12:27:46.816342Z"
+  },
+  "files": {
+    "historical_csv": "exports/forecast/historical_lulusan.csv",
+    "forecast_csv": "exports/forecast/forecast_lulusan.csv",
+    "model_files": [
+      "exports/forecast/arima_model.pickle"
+    ]
+  },
+  "notes": "Export forecasting model and related data for web deployment. Load model and use saved config/forecast to serve predictions."
+}

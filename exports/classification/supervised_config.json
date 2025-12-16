@@ -1,0 +1,82 @@
+{
+  "preprocessing": {
+    "scaler": {
+      "mean": [
+        2.480016481252575,
+        4368121.820354347,
+        2.5986814997939844,
+        1.688092295014421,
+        2.9752781211372064
+      ],
+      "std": [
+        2.770420366430499,
+        1552155.7563404632,
+        1.210297082511336,
+        0.7769033719394111,
+        1.4952908757695114
+      ],
+      "n_features": 5,
+      "type": "StandardScaler"
+    },
+    "imputer": {
+      "strategy": "median",
+      "statistics": [
+        2.0,
+        4200000.0,
+        3.0,
+        2.0,
+        3.0
+      ],
+      "type": "SimpleImputer"
+    },
+    "mappings": {
+      "f14_map": {
+        "Sangat Erat": 1,
+        "Erat": 2,
+        "Cukup Erat": 3,
+        "Kurang Erat": 4,
+        "Tidak Sama Sekali": 5
+      },
+      "f1101_map": {
+        "Instansi pemerintah": 1,
+        "Organisasi non-profit/Lembaga Swadaya Masyarakat": 2,
+        "Perusahaan swasta": 3,
+        "Wiraswasta/perusahaan sendiri": 4,
+        "Lainnya": 5,
+        "BUMN/BUMD": 6,
+        "Institusi/Organisasi Multilateral": 7
+      }
+    },
+    "features": [
+      "F502",
+      "F14_enc",
+      "F5d_enc",
+      "Years_Since_Graduation",
+      "Gap_Etika",
+      "Gap_Keahlian",
+      "Gap_English",
+      "Gap_IT",
+      "Gap_Komunikasi",
+      "Gap_Teamwork",
+      "Gap_Development"
+    ],
+    "label_mapping": {
+      "High_Salary": {
+        "0": "Gaji <= 5jt",
+        "1": "Gaji > 5jt"
+      }
+    }
+  },
+  "model": {
+    "name": "XGBoost",
+    "implementation": "XGBClassifier",
+    "file": "xgb_model.json",
+    "pickle_file": "xgb_model.pkl"
+  },
+  "metrics": {
+    "accuracy": 0.7675544794188862,
+    "f1_score": 0.4418604651162791,
+    "roc_auc": 0.7153982300884956
+  },
+  "notes": "Best supervised model selected: XGBoost (original, without SMOTE)."
+}

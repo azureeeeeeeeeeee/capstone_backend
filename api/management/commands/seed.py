@@ -91,12 +91,12 @@ class Command(BaseCommand):
 
         global_roles = ['Admin', 'Tracer', 'Alumni', 'Pimpinan Unit']
         for role_name in global_roles:
-            Role.objects.get_or_create(name=role_name, program_study=None)
+            Role.objects.get_or_create(name=role_name)
 
         self.stdout.write(self.style.SUCCESS(f"Seeded global roles into DB."))
 
         for program_name, program in program_mapping.items():
-            Role.objects.get_or_create(name=f"Prodi {program_name}", program_study=program)
+            Role.objects.get_or_create(name=f"Prodi {program_name}")
 
         self.stdout.write(self.style.SUCCESS(f"Seeded program-specific roles."))
 
