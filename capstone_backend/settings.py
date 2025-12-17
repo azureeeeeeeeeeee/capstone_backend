@@ -237,6 +237,11 @@ CSRF_TRUSTED_ORIGINS = [
     "https://tracer.neverlands.xyz:4101",
 ]
 
+# Required when Django is behind a reverse proxy (Nginx) with HTTPS
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
+
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = [
     'accept',
