@@ -1,0 +1,29 @@
+asgiref==3.10.0
+Django==5.2.8
+django-cors-headers==4.9.0
+djangorestframework==3.16.1
+djangorestframework-simplejwt==5.3.1
+python-dotenv>=1.0.0
+drf-yasg==1.21.11
+inflection==0.5.1
+packaging==25.0
+pytz==2025.2
+PyYAML==6.0.3
+six==1.17.0
+sqlparse==0.5.3
+typing_extensions==4.15.0
+tzdata==2025.2
+uritemplate==4.2.0
+
+# Machine Learning Dependencies
+numpy==1.26.4
+pandas==2.2.2
+scikit-learn==1.4.2
+xgboost==2.0.3
+joblib==1.4.2
+
+# Production server
+gunicorn==21.2.0
+
+# Optional: Database drivers
+# psycopg2-binary==2.9.9  # Uncomment if using PostgreSQL

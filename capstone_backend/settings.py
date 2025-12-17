@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-$&)0j)p8rfxbl4)bo1+b=q=t88yw@eja*=e@0&_jhn)z%jw*1r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["10.0.2.2", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["10.0.2.2", "localhost", "127.0.0.1", "192.168.0.7", "100.111.43.115", "103.171.154.14", "tracer.neverlands.xyz"]
 
 
 # Application definition
@@ -127,6 +127,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -162,8 +166,59 @@ STATIC_URL = "/static/"
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "http://localhost:4100",  # Frontend direct
+    "http://127.0.0.1:4100",
+    "http://localhost:4101",  # Backend direct
+    "http://127.0.0.1:4101",
+    "http://localhost:3424",  # Nginx proxy
+    "http://127.0.0.1:3424",
     "http://10.0.2.2:3000",  # Android Emulator
-    "http://192.168.1.8:3000",  # Physical Device (update IP sesuai network Anda)
+    "http://10.0.2.2:4100",
+    "http://10.0.2.2:4101",
+    "http://192.168.1.8:3000",  # Physical Device
+    "http://192.168.1.8:4100",
+    # IP: 192.168.0.7
+    "http://192.168.0.7:3424",
+    "http://192.168.0.7:4100",
+    "http://192.168.0.7:4101",
+    # IP: 100.111.43.115
+    "http://100.111.43.115:3424",
+    "http://100.111.43.115:4100",
+    "http://100.111.43.115:4101",
+    # IP: 103.171.154.14
+    "http://103.171.154.14:3424",
+    "http://103.171.154.14:4100",
+    "http://103.171.154.14:4101",
+    # Domain: tracer.neverlands.xyz
+    "http://tracer.neverlands.xyz",
+    "http://tracer.neverlands.xyz:3424",
+    "http://tracer.neverlands.xyz:4100",
+    "http://tracer.neverlands.xyz:4101",
+    "https://tracer.neverlands.xyz",
+    "https://tracer.neverlands.xyz:3424",
+    "https://tracer.neverlands.xyz:4100",
+    "https://tracer.neverlands.xyz:4101",
+]
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
 ]
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
