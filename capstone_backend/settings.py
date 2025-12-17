@@ -166,6 +166,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://192.168.1.8:3000",  # Physical Device (update IP sesuai network Anda)
 ]
 
+# CORS_ALLOW_ALL_ORIGINS = True
+
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_PORT = int(os.getenv("EMAIL_PORT"))
