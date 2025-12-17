@@ -61,6 +61,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# Allow URLs without trailing slash for API endpoints
+APPEND_SLASH = False
+
 ROOT_URLCONF = 'capstone_backend.urls'
 
 TEMPLATES = [
@@ -190,6 +193,40 @@ CORS_ALLOWED_ORIGINS = [
     "http://103.171.154.14:4100",
     "http://103.171.154.14:4101",
     # Domain: tracer.neverlands.xyz
+    "http://tracer.neverlands.xyz",
+    "http://tracer.neverlands.xyz:3424",
+    "http://tracer.neverlands.xyz:4100",
+    "http://tracer.neverlands.xyz:4101",
+    "https://tracer.neverlands.xyz",
+    "https://tracer.neverlands.xyz:3424",
+    "https://tracer.neverlands.xyz:4100",
+    "https://tracer.neverlands.xyz:4101",
+]
+
+# CSRF Configuration (required for Django admin and forms over HTTPS)
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:4100",
+    "http://127.0.0.1:4100",
+    "http://localhost:4101",
+    "http://127.0.0.1:4101",
+    "http://localhost:3424",
+    "http://127.0.0.1:3424",
+    "http://10.0.2.2:3000",
+    "http://10.0.2.2:4100",
+    "http://10.0.2.2:4101",
+    "http://192.168.1.8:3000",
+    "http://192.168.1.8:4100",
+    "http://192.168.0.7:3424",
+    "http://192.168.0.7:4100",
+    "http://192.168.0.7:4101",
+    "http://100.111.43.115:3424",
+    "http://100.111.43.115:4100",
+    "http://100.111.43.115:4101",
+    "http://103.171.154.14:3424",
+    "http://103.171.154.14:4100",
+    "http://103.171.154.14:4101",
     "http://tracer.neverlands.xyz",
     "http://tracer.neverlands.xyz:3424",
     "http://tracer.neverlands.xyz:4100",

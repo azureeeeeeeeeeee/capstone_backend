@@ -95,8 +95,9 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.SUCCESS(f"Seeded global roles into DB."))
 
-        for program_name, program in program_mapping.items():
-            Role.objects.get_or_create(name=f"Prodi {program_name}")
+        # for program_name, program in program_mapping.items():
+        #     Role.objects.get_or_create(name=f"Prodi {program_name}")
+        Role.objects.get_or_create(name=f"Prodi")
 
         self.stdout.write(self.style.SUCCESS(f"Seeded program-specific roles."))
 
