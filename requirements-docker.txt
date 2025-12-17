@@ -16,9 +16,10 @@ tzdata==2025.2
 uritemplate==4.2.0
 
 # Machine Learning Dependencies
-numpy==1.26.4
+numpy>=2.0.0
 pandas==2.2.2
 scikit-learn==1.8.0
+statsmodels==0.14.4
 xgboost==2.0.3
 joblib==1.4.2
 
