@@ -8,4 +8,5 @@ urlpatterns = [
     path("", include("api.routes.user_role_routes")),
     path("configs/", include("api.routes.config_routes")),
     path("ml/", include("api.routes.ml_routes")),
+    path("mailer/", include("api.routes.mail_routes")),
 ]

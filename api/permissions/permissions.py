@@ -73,3 +73,36 @@ class AnswerPermissions(BasePermission):
 class ConfigPermissions(BasePermission):
     def has_permission(self, request, view):
         return request.user.is_authenticated and request.user.role.name in ['Admin']
+
+class AllReminderPermission(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.role.name in ['Admin', 'Tracer']
+
+class UserReminderPermission(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.role.name in ['Admin', 'Tracer']
+
+
+class ProdiReminderPermission(BasePermission):
+
+    def has_permission(self, request, view):
+        user = request.user
+
+        if not user.is_authenticated:
+            return False
+
+        if not user.role or user.role.name != 'Prodi':
+            return False
+
+        if not user.program_study_id:
+            return False
+
+        program_study_ids = request.data.get('program_study_ids', [])
+
+        if not program_study_ids:
+            return False
+
+        return all(
+            str(ps_id) == str(user.program_study_id)
+            for ps_id in program_study_ids
+        )

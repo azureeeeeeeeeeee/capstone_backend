@@ -263,6 +263,9 @@ CORS_ALLOW_METHODS = [
     'PUT',
 ]
 
+# Alternative: Allow all origins for development (less secure)
+# CORS_ALLOW_ALL_ORIGINS = True
+
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_PORT = int(os.getenv("EMAIL_PORT"))
