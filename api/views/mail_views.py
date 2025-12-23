@@ -198,8 +198,12 @@ def remind_unfinished_by_program_study(request):
 )
 @api_view(['POST'])
 @permission_classes([UserReminderPermission])
-def remind_unfinished_by_users(request):
-    user_ids = request.data.get("user_ids", [])
+def remind_unfinished_by_users(request, user_id=None):
+    # If user_id is passed from URL, use it; otherwise get from request body
+    if user_id:
+        user_ids = [user_id]
+    else:
+        user_ids = request.data.get("user_ids", [])
 
     now = timezone.now()
     reminders_sent = []
