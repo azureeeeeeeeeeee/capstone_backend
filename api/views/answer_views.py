@@ -211,7 +211,7 @@ NIM : {request.user.id}
 Program Studi : {request.user.program_study.name}
 
 Link:
-{os.getenv("FRONTEND_URL")}/surveys/{skp_survey.id}/skp?token={token}
+{os.getenv("FRONTEND_URL")}/survey/{skp_survey.id}/supervisor?token={token}
 """,
             settings.EMAIL_HOST_USER,
             [spv_email],
