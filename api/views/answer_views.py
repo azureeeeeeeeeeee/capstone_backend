@@ -188,24 +188,45 @@ def answer_bulk_create(request, survey_id):
     if errors:
         return Response({'success': results, 'errors': errors}, status=207)
 
-    # Supervisor email logic (unchanged)
+    # Update user's last_survey field based on survey type
+    if survey.survey_type in ['exit', 'lv1', 'lv2']:
+        user = request.user
+        # Only update if it's a progression (not going backwards)
+        survey_order = {'none': 0, 'exit': 1, 'lv1': 2, 'lv2': 3}
+        current_level = survey_order.get(user.last_survey, 0)
+        new_level = survey_order.get(survey.survey_type, 0)
+        
+        if new_level > current_level:
+            user.last_survey = survey.survey_type
+            user.save(update_fields=['last_survey'])
+
+    # Supervisor email logic
     if survey.survey_type == "lv1":
-        code = SystemConfig.objects.get(key="QUESTION_CODE_SPV_EMAIL").value
-        question_spv = Question.objects.get(code=code)
-        answer_spv = Answer.objects.get(
-            user=request.user,
-            survey=survey,
-            question=question_spv
-        )
-        spv_email = answer_spv.answer_value
+        try:
+            code = SystemConfig.objects.get(key="QUESTION_CODE_SPV_EMAIL").value
+            question_spv = Question.objects.get(code=code)
+            answer_spv = Answer.objects.get(
+                user=request.user,
+                survey=survey,
+                question=question_spv
+            )
+            spv_email = answer_spv.answer_value
 
-        token_obj = SupervisorToken.objects.create(alumni=request.user)
-        skp_survey = Survey.objects.get(survey_type='skp')
-        token = str(token_obj.token)
+            # Use filter().first() to handle 0 or multiple SKP surveys
+            # Prefer active survey (newest first), fallback to any SKP survey (newest first)
+            skp_survey = Survey.objects.filter(survey_type='skp', is_active=True).order_by('-created_at').first()
+            if not skp_survey:
+                skp_survey = Survey.objects.filter(survey_type='skp').order_by('-created_at').first()
+            
+            if not skp_survey:
+                print("Warning: No SKP survey found, cannot send supervisor email")
+            else:
+                token_obj = SupervisorToken.objects.create(alumni=request.user)
+                token = str(token_obj.token)
 
-        send_mail(
-            f"Pengisian survey kepuasan pengguna - {request.user.username}",
-            f"""
+                send_mail(
+                    f"Pengisian survey kepuasan pengguna - {request.user.username}",
+                    f"""
 Nama : {request.user.username}
 NIM : {request.user.id}
 Program Studi : {request.user.program_study.name}
@@ -213,9 +234,12 @@ Program Studi : {request.user.program_study.name}
 Link:
 {os.getenv("FRONTEND_URL")}/survey/{skp_survey.id}/supervisor?token={token}
 """,
-            settings.EMAIL_HOST_USER,
-            [spv_email],
-        )
+                    settings.EMAIL_HOST_USER,
+                    [spv_email],
+                )
+        except (SystemConfig.DoesNotExist, Question.DoesNotExist, Answer.DoesNotExist) as e:
+            # Log the error but don't fail the request - answers are already saved
+            print(f"Warning: Could not send supervisor email - {str(e)}")
 
     return Response(results, status=201)
 
