@@ -37,7 +37,6 @@ class UserSerializer(serializers.ModelSerializer):
             id=validated_data['id'],
             username=validated_data['username'],
         )
-        print(f"Password : {validated_data['id']}-{validated_data['phone_number']}")
         user.set_password(f"{validated_data['id']}-{validated_data['phone_number']}")
         user.save()
         return user

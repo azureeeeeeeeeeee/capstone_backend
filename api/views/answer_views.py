@@ -55,7 +55,7 @@ def get_answer_queryset(user, survey):
     responses={201: AnswerSerializer},
 )
 @api_view(['GET', 'POST'])
-@permission_classes([permissions.SurveyPermissions])
+@permission_classes([permissions.AnswerPermissions])
 def answer_list_create(request, survey_id):
     try:
         survey = Survey.objects.get(pk=survey_id)
